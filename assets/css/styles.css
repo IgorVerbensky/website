@@ -1,0 +1,379 @@
+/* =================== THEME =================== */
+:root{
+  --page-bg:#E8E8E6;   /* молочний */
+  --text:#171717;
+  --accent:#F4A9A8;    /* рожевий */
+
+  --bg-transition:400ms;
+  --text-transition:250ms;
+}
+
+*{ box-sizing:border-box }
+html,body{
+  margin:0; padding:0;
+  background:var(--page-bg);
+  color:var(--text);
+  transition:background-color var(--bg-transition) ease,
+             color var(--text-transition) ease;
+  font-family:"Nunito",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  line-height:1.5;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+.nowrap{white-space:nowrap}
+
+/* =================== LAYOUT =================== */
+.container{ max-width:1920px; margin:0 auto; padding:0 120px; }
+@media (max-width:1536px){ .container{padding:0 80px} }
+@media (max-width:1280px){ .container{padding:0 60px} }
+@media (max-width:1024px){ .container{padding:0 40px} }
+
+/* =================== HEADER =================== */
+.site-header{ height:80px; background:var(--page-bg); position:static; box-shadow:none; border-bottom:none; }
+.header-inner{height:100%; display:flex; align-items:center; justify-content:space-between}
+.logo{ font-family:"Playfair Display",serif; font-weight:700; font-size:32px; color:var(--text); text-decoration:none; white-space:nowrap; }
+.nav{display:flex; align-items:center; gap:32px; flex-wrap:wrap}
+.nav-link{ color:var(--text); text-decoration:none; transition:color .3s ease; font-size:16px; }
+.nav-link:hover{color:var(--accent)}
+.btn-primary{
+  display:inline-block; background:var(--accent); color:#000; font-weight:700;
+  border:1px solid #000; border-radius:100px; padding:12px 24px; text-decoration:none;
+  transition:filter .2s ease, background-color .2s ease;
+}
+.btn-primary:hover{filter:brightness(0.95)}
+
+/* =================== HERO =================== */
+.hero{background:transparent}
+.hero-inner{ display:flex; align-items:flex-start; justify-content:space-between; gap:40px; padding-top:120px; }
+@media (min-width:1920px){ .hero-inner{padding-top:110px} }
+.hero-left{ width:950px; max-width:100% }
+.h1{ font-family:"Playfair Display",serif; font-weight:800; color:var(--text); line-height:1.54; margin:0 0 33px 0; font-size:48px; }
+@media (max-width:1536px){.h1{font-size:34px}}
+@media (max-width:1280px){.h1{font-size:32px}}
+@media (max-width:1024px){.h1{font-size:30px}}
+
+.hero .h1 { margin-top: 70px; }
+
+.lead{ font-family:"Playfair Display",serif; color:var(--text); line-height:2; margin:0 0 33px; font-size:32px; }
+@media (max-width:1536px){.lead{font-size:20px}}
+@media (max-width:1280px){.lead{font-size:18px}}
+@media (max-width:1024px){.lead{font-size:16px}}
+
+.cta{
+  display:inline-block; background:#f2d6d5; border:1px solid #000; border-radius:40px;
+  color:#000; text-decoration:none; font-family:"Playfair Display",serif; font-weight:700;
+  text-align:center; line-height:32px; transition:background-color .3s ease;
+  padding:20px 36px; font-size:24px;
+}
+.cta:hover{background:#e58f8e}
+@media (max-width:1536px){.cta{font-size:22px; padding:18px 30px}}
+@media (max-width:1440px){.cta{font-size:20px; padding:14px 26px}}
+@media (max-width:1280px){.cta{font-size:18px; padding:14px 24px}}
+@media (max-width:1024px){.cta{font-size:16px; padding:10px 20px}}
+
+.hero-right{ width:clamp(200px,36vw,695px); margin-left:auto; margin-right:0; display:flex; align-items:flex-start; justify-content:flex-end; }
+.hero-img{ width:100%; height:auto; max-width:600px; display:block; margin-top:-20px }
+
+/* =================== PC-TEXT + WIPE =================== */
+.pc-text{ background:transparent; position:relative }
+.pc-text-box{ height:1000px; display:flex; flex-direction:column; justify-content:center; gap:41px; }
+.pc-text-line{ color:var(--text); font-size:96px; line-height:128px; font-family:"Playfair Display",serif; }
+
+.section-pink{background:transparent}
+.section-tall{min-height:80vh; display:flex; flex-direction:column; justify-content:center; gap:16px}
+.h2{ margin:0 0 8px 0; font-family:"Playfair Display",serif; font-weight:700; color:var(--text); font-size:40px; }
+
+@media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important} }
+
+/* Wipe layer */
+#about{ position:relative }
+.about-wipe-layer{
+  --wipeScale: 0;
+  --winLeftPx: 100vw;
+  position:absolute; inset:0;
+  pointer-events:none; z-index:10;
+}
+.about-wipe-panel{
+  position:absolute; inset:0;
+  background:#E8E8E6;
+  transform-origin:right center;
+  transform:scaleX(var(--wipeScale));
+}
+.about-reveal-text{ position:absolute; inset:0; pointer-events:none; }
+#about .about-new{
+  position:absolute;
+  left:var(--matchLeft, 120px);
+  top:var(--matchTop, 50%);
+  transform:translateY(0);
+  font-family:"Playfair Display",serif;
+  font-weight:700; color:#000;
+  line-height:128px; font-size:96px;
+  white-space:nowrap; text-align:left;
+  will-change: clip-path;
+  clip-path: inset(0 0 0 var(--winLeftPx));
+}
+.pc-text-line, #about .about-new { font-size:96px; line-height:128px; }
+@media (max-width:1536px){ .pc-text-line, #about .about-new { font-size:72px; line-height:96px; } }
+@media (max-width:1280px){ .pc-text-line, #about .about-new { font-size:56px; line-height:72px; } }
+@media (max-width:1024px){ .pc-text-line, #about .about-new { font-size:42px; line-height:56px; } }
+@media (max-width:768px){  .pc-text-line, #about .about-new { font-size:32px; line-height:44px; } }
+
+/* =================== ABOUT ME =================== */
+.aboutme-section { background-color:#E8E8E6; padding: clamp(1rem, 5vw, 3rem); }
+.aboutme-inner {
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+.aboutme-right { padding-right: 120px; }
+.aboutme-left  { flex:1 1 300px; max-width:948px; margin-left:73px; margin-top:-65px; }
+.aboutme-right img { width:100%; height:auto; border-radius: clamp(0.5rem, 2vw, 1rem); }
+.intro-title, .intro-name { color:#000; font-family:"Playfair Display"; font-weight:700; }
+.intro-title{ font-size:32px; line-height:1; margin-bottom:.2em; }
+.intro-name { font-size:32px; }
+.aboutme-text{ color:#000; font-family:"Playfair Display"; font-size:24px; }
+
+/* =================== EDUCATION =================== */
+.education-section { background:#E8E8E6; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:270px; padding-bottom:120px; }
+.content-box { margin-left:120px; max-width:max-content; }
+.edu-title { font-family:"Playfair Display",serif; font-size:40px; font-weight:700; margin-bottom:40px; }
+.edu-item { margin-bottom:32px; cursor:pointer; padding:.5rem 0; transition:color .3s ease; }
+.edu-item:hover { color: var(--accent); }
+.edu-name { font-family:"Playfair Display",serif; font-size:24px; font-weight:700; color:#000; }
+.edu-details { font-family:"Nunito",sans-serif; font-size:18px; color:#555; margin-top:4px; }
+.education-inner { display:flex; align-items:flex-start; justify-content:space-between; gap:40px; }
+@media (min-width:1280px){ .education-preview{ transform:translate(-120px,0); will-change:transform; } }
+@media (max-width:900px){
+  .education-inner{ flex-direction:column; }
+  .education-preview{ order:2; width:100%; max-width:100%; }
+  .content-box{ order:1; }
+}
+
+/* =================== HOW I WORK (STEPPER) =================== */
+.howto-section { background:#E8E8E6; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:70px; padding-bottom:200px; }
+.textblock { margin-left:120px; max-width:800px; }
+.howdoIworktext { font-family:"Playfair Display",serif; font-size:48px; font-weight:400; color:#000; text-transform:uppercase; margin-bottom:40px; }
+.howIwork { display:flex; flex-direction:column; gap:20px; }
+.point { font-family:"Playfair Display",serif; font-size:32px; font-weight:400; color:#000; text-transform:uppercase; }
+
+.howto-row { display:flex; align-items:stretch; gap:40px; }
+.point.point--active{ color: var(--accent); }
+
+.pair-panel {
+  flex:1 1 auto; max-width:70vw; opacity:0; transform:translateX(40px);
+  transition: opacity .35s ease, transform .35s ease; will-change: opacity, transform;
+  padding: 0 24px 0 240px;
+  display:grid; align-items:center; justify-items:start; text-align:left;
+}
+.pair-panel.is-visible{ opacity:1; transform:translateX(0); }
+.pair-text{
+  color:#000; font-family:"Playfair Display",serif; font-size:34px; font-weight:400; line-height:normal; margin:0;
+  grid-area:1 / 1; opacity:1; transform:translateY(0); transition:opacity .25s ease, transform .25s ease;
+}
+.pair-text[data-state="out"]{ opacity:0; transform:translateY(-8px); }
+.pair-text[data-state="in"]{  opacity:1; transform:translateY(0); }
+
+@media (max-width:1100px){ .howto-row{ gap:28px; } .pair-panel{ flex-basis:420px; } }
+@media (max-width:900px){
+  .howto-row{ flex-direction:column; }
+  .pair-panel{ max-width:none; width:calc(100% - 120px); margin-left:120px; }
+}
+@media (max-width:560px){
+  .textblock{ margin-left:24px; max-width:none; }
+  .pair-panel{ width:calc(100% - 24px); margin-left:24px; }
+  .howdoIworktext{ font-size:38px; }
+  .point{ font-size:26px; }
+}
+
+/* =================== YOU FEEL (CARDS) =================== */
+.youfeel-section{
+  background:#E8E8E6;
+  padding:80px 120px;
+  text-align:center;
+}
+.title-youfeel{
+  font-family:"Playfair Display",serif; font-size:40px; font-weight:700; color:#000; margin-bottom:20px;
+}
+.title-explainer{
+  color:#000; text-align:center; font-family:"Playfair Display"; font-size:28px; font-weight:400;
+  margin-bottom:60px;
+}
+
+/* Грід: 4 колонки */
+.youfeel-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:32px;
+  justify-items:center;
+}
+
+/* Квадратні картки */
+.youfeel-item{
+  background:#fff; border:2px solid #000; border-radius:20px;
+  width:100%; max-width:400px; aspect-ratio:1/1;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  padding:20px; transition:transform .3s ease;
+}
+.youfeel-item:hover{ transform:scale(1.03); }
+
+.youfeel-item .icon {
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:24px; width:100%;
+}
+.youfeel-item .icon svg {
+  width:180px; height:180px; display:block; margin:0 auto;
+}
+
+.youfeel-item p{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(18px, 1.3vw, 22px);
+  color:#000; margin:0; line-height:1.35; text-align:center;
+}
+
+/* брейкпойнти гріда */
+@media (max-width:1700px){ .youfeel-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width:900px){  .youfeel-grid{ grid-template-columns: 1fr; } }
+
+@media (max-width:1280px){
+  .youfeel-section{ padding:60px 40px; }
+  .title-youfeel{ font-size:34px; }
+  .title-explainer{ font-size:18px; margin-bottom:40px; }
+}
+@media (max-width:600px){
+  .youfeel-section{ padding:40px 20px; }
+  .title-youfeel{ font-size:28px; }
+  .title-explainer{ font-size:16px; margin-bottom:30px; }
+}
+
+/* =================== CTA BLOCK UNDER CARDS =================== */
+.cta-block{ margin-top:180px; text-align:center; background:#E8E8E6; }
+.btn-cta{
+  background:#E8E8E6; color:#000;
+  font-family:"Playfair Display"; font-weight:700; font-size:36px;
+  padding:18px 36px; border:2px solid #000; border-radius:100px; text-decoration:none;
+  display:inline-block; transition:transform .2s ease;
+}
+.btn-cta:hover{ transform:scale(1.03); background-color:#f18c8c; }
+.cta-note{
+  margin-top:20px; font-size:20px; font-family:"Nunito"; color:#000;
+  max-width:600px; margin-left:auto; margin-right:auto; background:#E8E8E6;
+}
+
+/* =================== FOOTER (compact + centered) =================== */
+.site-footer{
+  background:#E8E8E6;
+  margin-top:0;
+  position:relative;
+  --footer-gap:56px;                          /* трохи менший верхній/внутр. відступ */
+  --footer-bottom-offset:clamp(24px,4vw,48px);/* нижній блок ближче до контенту */
+}
+
+/* тонка лінія зверху футера */
+.site-footer::before{
+  content:"";
+  position:absolute; inset:0 0 auto 0;
+  height:1px; background:#000;
+}
+
+/* Сітка футера */
+.footer-wrap{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  gap:40px;                                    /* менший міжколоночний інтервал */
+  padding:var(--footer-gap) 120px;
+  align-items:start;
+}
+
+/* Розкладка без перекриття */
+.footer-wrap > .footer-col:nth-child(1){ grid-column:1 / span 4; }  /* бренд */
+.footer-wrap > .footer-col:nth-child(2){ grid-column:5 / span 3; }  /* контакти */
+.footer-wrap > .footer-col:nth-child(3){ grid-column:8 / span 2; }  /* навігація */
+.footer-wrap > .footer-col.footer-cta{  grid-column:10 / span 3; }  /* CTA */
+
+/* Тексти/заголовки */
+.footer-brand{
+  font-family:"Playfair Display",serif;
+  font-size:24px; font-weight:700;
+  margin:0 0 10px 0;
+}
+.footer-tagline{ font-size:16px; line-height:1.4; margin:0; }
+
+/* Соціальні */
+.footer-social{ display:flex; gap:10px; margin-top:12px; }
+.footer-social a{
+  width:36px; height:36px; border:2px solid #000; border-radius:6px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:#fff; color:#000; transition:all .3s ease;
+}
+.footer-social a:hover{ background:#000; color:#fff; }
+.footer-social svg{ width:20px; height:20px; }
+
+/* Заголовки/списки */
+.footer-title{ font-size:18px; font-weight:700; margin:0 0 10px 0; }
+.footer-list{ list-style:none; padding:0; margin:0; }
+.footer-list li{ margin:6px 0; }
+.footer-list a{ color:#000; text-decoration:none; }
+.footer-list a:hover{ opacity:.85; text-decoration:none; } /* без підкреслень */
+
+/* CTA: знову центровано всередині своєї колонки */
+.footer-cta{
+  display:flex; flex-direction:column;
+  align-items:center; gap:10px; text-align:center;
+}
+.footer-cta .btn-cta{
+  background:#f6a9a9;
+  padding:10px 20px;                   /* трохи тонша */
+  border:2px solid #000; border-radius:20px;
+  font-weight:700; font-size:16px; line-height:1.2; color:#000;
+  cursor:pointer; transition:all .3s ease;
+  width:100%; max-width:340px;         /* помірна ширина + центр */
+  margin:0 auto; text-align:center; white-space:normal; word-break:break-word;
+}
+.footer-cta .btn-cta:hover{ filter:brightness(.97); }
+.footer-cta .cta-note{
+  margin:6px 0 0 0;
+  font-size:14px; line-height:1.45;
+  max-width:340px; text-align:center;  /* як “раніше” — по центру */
+}
+
+/* Низ футера (компактніший і по центру) */
+.footer-bottom{
+  margin-top:var(--footer-bottom-offset);
+  border-top:1px solid #000;
+  padding:14px 120px 18px;             /* зменшена висота смуги */
+  display:flex; flex-direction:column; gap:8px;
+}
+.footer-legal{
+  display:flex; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap;
+  font-family:"Nunito",sans-serif; font-size:14px; text-align:center;
+}
+.back-to-top{ margin-left:8px; color:#000; text-decoration:none; }
+.back-to-top:hover{ opacity:.8; text-decoration:none; }
+
+/* ===== Адаптив ===== */
+@media (max-width:1280px){
+  .footer-wrap{ padding:var(--footer-gap) 60px; gap:32px; }
+  .footer-bottom{ padding:12px 60px 16px; }
+}
+
+@media (max-width:980px){
+  .footer-wrap{
+    grid-template-columns:repeat(6, 1fr);
+    padding:var(--footer-gap) 40px; gap:24px;
+  }
+  .footer-wrap > .footer-col:nth-child(1){ grid-column:1 / span 3; }
+  .footer-wrap > .footer-col:nth-child(2){ grid-column:4 / span 3; }
+  .footer-wrap > .footer-col:nth-child(3){ grid-column:1 / span 3; }
+  .footer-wrap > .footer-col.footer-cta{  grid-column:4 / span 3; }
+  .footer-bottom{ margin-top:28px; }
+}
+
+@media (max-width:560px){
+  .footer-wrap{
+    grid-template-columns:repeat(4, 1fr);
+    padding:var(--footer-gap) 24px; gap:20px;
+  }
+  .footer-wrap > .footer-col{ grid-column:1 / -1; }
+  .footer-cta .btn-cta, .footer-cta .cta-note{ max-width:100%; }
+  .footer-bottom{ padding:12px 24px 16px; }
+}
