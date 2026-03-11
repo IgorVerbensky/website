@@ -3,40 +3,104 @@ window.addEventListener('load', () => {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  // Вхідні анімації
+  // 1. Вхідні анімації при завантаженні
   gsap.from('.reveal-line', { y: 14, opacity: 0, duration: 0.9, ease: 'power2.out', stagger: 0.15 });
   gsap.from(['.lead','.cta'], { opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.45, stagger: 0.2 });
   gsap.from('.hero-img', { opacity: 0, y: 10, scale: 0.98, duration: 0.8, ease: 'power2.out', delay: 0.35 });
 
-  // Кольори фону сторінки
+  // ==============================================================
+  // 2. ФІКСАЦІЯ МЕНЮ ТА ГЕРОЯ (Разом) ДЛЯ АНІМАЦІЇ КВІТКИ
+  // ==============================================================
+  const header = document.querySelector('.site-header');
+  const hero = document.querySelector('.hero');
+  let triggerEl = ".hero";
+
+  // Динамічно обгортаємо хедер і героя в один блок, щоб зафіксувати їх разом
+  if (header && hero) {
+    const pinWrapper = document.createElement('div');
+    pinWrapper.className = 'hero-pin-wrapper';
+    header.parentNode.insertBefore(pinWrapper, header);
+    pinWrapper.appendChild(header);
+    pinWrapper.appendChild(hero);
+    triggerEl = pinWrapper;
+  }
+
+  const canvas = document.getElementById("hero-sequence");
+  if (canvas) {
+    const context = canvas.getContext("2d");
+    const frameCount = 81; 
+    
+    // Формуємо шлях до файлів з дужками
+    const currentFrame = index => `assets/img/sequence/frame (${index + 1}).png`;
+    const images = [];
+    const playhead = { frame: 0 };
+
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      images.push(img);
+    }
+
+    images[0].onload = render;
+
+    function render() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(images[playhead.frame], 0, 0, canvas.width, canvas.height);
+    }
+
+    // Таймлайн для фіксації всього верхнього екрану (Меню + Герой)
+    const heroTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerEl,    // Тригер - наша нова обгортка
+        start: "top top",      // Спрацьовує одразу при завантаженні (від верху екрана)
+        end: "+=2500",         // Тривалість анімації (чим більше, тим повільніше)
+        pin: true,             // Фіксуємо ЕКРАН РАЗОМ З МЕНЮ
+        scrub: 1.2,            // Плавність програвання
+        anticipatePin: 1
+      }
+    });
+
+    heroTl.to(playhead, {
+      frame: frameCount - 1,
+      snap: "frame",
+      ease: "none",
+      onUpdate: render,
+      duration: 1
+    });
+  }
+
+  // ==============================================================
+  // 3. ЗМІНА КОЛЬОРУ ТА ПЕРЕХІД ДО СЕКЦІЇ ABOUT
+  // ==============================================================
   const root = document.documentElement;
   const HERO_BG = '#E8E8E6';
   const PINK_BG = '#F4A9A8';
   gsap.set(root, { '--page-bg': HERO_BG });
 
-  // Перехід фону герой → рожевий до секції #about
   gsap.timeline({
     scrollTrigger: {
-      trigger: '.h1',
-      start: 'bottom top',
-      endTrigger: '#about',
-      end: 'top 50%',
+      trigger: '#about',
+      start: 'top bottom', 
+      end: 'top center',   
       scrub: true,
       invalidateOnRefresh: true
-      // markers: true,
     }
-  }).to(root, { '--page-bg': PINK_BG, duration: 1, ease: 'none', immediateRender: false });
+  }).to(root, { '--page-bg': PINK_BG, duration: 1, ease: 'none' });
 
-  // При вході в рожеву фазу — сховати/показати картинку
-  ScrollTrigger.create({
-    trigger: '.h1',
-    start: 'bottom top',
-    endTrigger: '#about',
-    end: 'top 50%',
-    onEnter:     () => gsap.to('.hero-img', { opacity: 0, duration: 0.2, ease: 'power1.out' }),
-    onLeaveBack: () => gsap.to('.hero-img', { opacity: 1, duration: 0.2, ease: 'power1.out' }),
-    invalidateOnRefresh: true
-  });
+gsap.fromTo('.hero-img', 
+    { opacity: 1 }, 
+    {
+      opacity: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: '#about',
+        start: 'top bottom',
+        end: 'top center',
+        scrub: true,
+        immediateRender: false 
+      }
+    }
+  );
 
   /* ====== ABOUT wipe (панель справа→ліво + reveal нового тексту) ====== */
   function positionAboutNew(){
@@ -80,7 +144,6 @@ window.addEventListener('load', () => {
       pin: true,
       scrub: true,
       anticipatePin: 1,
-      // markers: true,
       onUpdate: self => updateReveal(self.progress)
     }
   });
@@ -109,12 +172,11 @@ document.querySelectorAll('.edu-item').forEach(item => {
     }
   };
   item.addEventListener('mouseenter', setImg);
-  item.addEventListener('click', setImg); // для мобільних
+  item.addEventListener('click', setImg); 
 });
 
 
 /* ================== HOWTO SCROLL-STEPPER ================== */
-/* Глобальне відстеження напряму прокрутки (1: вниз, -1: вгору) */
 let __lastScrollY = window.scrollY;
 let __scrollDir   = 1;
 window.addEventListener('scroll', () => {
@@ -132,7 +194,6 @@ window.addEventListener('scroll', () => {
 
   const points = Array.from(pointsWrap.querySelectorAll('.point'));
 
-  // ПАРИ (порядок відповідає пунктам)
   const pairs = [
     { text: 'можна приходити з плутаниною, мовчанням чи сильними емоціями.', activeIndex: 0 },
     { text: 'усе сказане залишається між нами.', activeIndex: 1 },
@@ -142,9 +203,9 @@ window.addEventListener('scroll', () => {
     { text: 'онлайн або в кабінеті - біля метро Звіринецька (м. Київ). Як правило 1 раз на тиждень.', activeIndex: 5 }
   ];
 
-  let inSequence  = false; // режим перехоплення скролу
-  let step        = -1;    // -1: не стартували; 0..N: активний крок
-  let lastWheelTs = 0;     // тротлінг жестів
+  let inSequence  = false; 
+  let step        = -1;    
+  let lastWheelTs = 0;     
 
   function resetPoints(){ points.forEach(p => p.classList.remove('point--active')); }
   function setActivePoint(index){
@@ -153,7 +214,6 @@ window.addEventListener('scroll', () => {
     if (t) t.classList.add('point--active');
   }
 
-  // Анімована заміна тексту в правій панелі (під grid-накладання)
   function renderPairText(newText){
     const oldNode = panel.querySelector('.pair-text[data-state="in"]');
     if (oldNode){
@@ -194,15 +254,13 @@ window.addEventListener('scroll', () => {
     unlockScroll();
     inSequence = false;
     step = -1;
-    resetPoints(); // кольори назад у чорний
-    // panel.innerHTML = ''; // якщо треба очищати текст — розкоментуй
+    resetPoints(); 
   }
 
-  /* ===== Перехоплення скрол/тач/клавіш у режимі стопера ===== */
   function onWheel(e){
     if (!inSequence) return;
     const now = performance.now();
-    if (now - lastWheelTs < 220){ e.preventDefault(); return; } // тротлінг
+    if (now - lastWheelTs < 220){ e.preventDefault(); return; } 
     lastWheelTs = now;
 
     e.preventDefault();
@@ -245,9 +303,6 @@ window.addEventListener('scroll', () => {
     window.removeEventListener('keydown', onKey);
   }
 
-  // Старт стопера: коли заголовок перетинає центр в’юпорту.
-  // Якщо прокручуємо ВНИЗ — починаємо з 0.
-  // Якщо прокручуємо ВГОРУ — починаємо з останнього кроку.
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -258,13 +313,12 @@ window.addEventListener('scroll', () => {
 
   io.observe(title);
 })();
+
 // ===== Footer helpers =====
 (function(){
-  // актуальний рік
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 
-  // плавний скрол до верху
   document.querySelectorAll('a[href="#top"], .back-to-top').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -272,4 +326,3 @@ window.addEventListener('scroll', () => {
     });
   });
 })();
-
