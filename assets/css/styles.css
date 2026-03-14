@@ -45,7 +45,7 @@ html,body{
 
 /* =================== HERO =================== */
 .hero{background:transparent}
-.hero-inner{ display:flex; align-items:flex-start; justify-content:space-between; gap:40px; padding-top:120px; }
+
 @media (min-width:1920px){ .hero-inner{padding-top:110px} }
 .hero-left{ width:950px; max-width:100% }
 .h1{ font-family:"Playfair Display",serif; font-weight:800; color:var(--text); line-height:1.54; margin:0 0 33px 0; font-size:48px; }
@@ -72,8 +72,36 @@ html,body{
 @media (max-width:1280px){.cta{font-size:18px; padding:14px 24px}}
 @media (max-width:1024px){.cta{font-size:16px; padding:10px 20px}}
 
-.hero-right{ width:clamp(200px,36vw,695px); margin-left:auto; margin-right:0; display:flex; align-items:flex-start; justify-content:flex-end; }
-.hero-img{ width:100%; height:auto; max-width:600px; display:block; margin-top:-20px }
+.hero-inner { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 40px; 
+  padding-top: 40px; 
+  min-height: 85vh; 
+}
+
+.hero-right { 
+  
+  width: clamp(400px, 55vw, 900px); 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end; 
+}
+
+.hero-img { 
+  width: 100%; 
+  height: auto; 
+  max-width: 900px; 
+  display: block; 
+  
+  /* 1. Зсуваємо квітку трохи вниз екрану */
+  transform: translateY(40%, 8%); 
+  
+  /* 2. Накладаємо маску, яка плавно розчиняє низ (останні 15%) */
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
 
 /* =================== PC-TEXT + WIPE =================== */
 .pc-text{ background:transparent; position:relative }
