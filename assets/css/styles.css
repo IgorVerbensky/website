@@ -102,7 +102,7 @@ html,body{
 
 .hero-right { 
   
-  width: clamp(400px, 69.2vw, 900px); /* ЗМІНЕНО: 55vw замінено на 57.7vw потім на 69.2vw */
+  width: clamp(400px, 55vw, 900px); /* ЗМІНЕНО: 55vw замінено на 57.7vw потім на 69.2vw */
   display: flex; 
   align-items: center; 
   justify-content: flex-end; 
