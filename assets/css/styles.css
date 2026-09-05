@@ -438,11 +438,7 @@ html,body{
    ======================================================= */
 @media (max-width: 900px) {
   /* 1. БАЗА */
-  html, body {
-    transition: none !important;
-    background-color: #E8E8E6 !important; 
-    color: #171717 !important;
-  }
+  /* Removed the html, body overrides so GSAP background color variables and transitions work properly */
   .container { padding: 0 20px !important; } 
 
   /* 2. ХЕДЕР */
@@ -509,40 +505,41 @@ html,body{
     margin: 10px auto 0 auto !important; 
     width: 100% !important; 
     max-width: 220px !important; 
-    aspect-ratio: 1 / 1 !important; /* Гарантуємо, що Canvas не схлопнеться у висоту! */
+    aspect-ratio: 1 / 1 !important; 
     height: auto !important;
     left: 0 !important; 
     top: 0 !important;
-    opacity: 1 !important; /* Гарантуємо, що квітка видима */
+    opacity: 1 !important; 
   }
 
-  /* 5. СЕКЦІЯ ТЕКСТУ ("У твоєму темпі...") — ПРИБИРАЄМО ВЕЛИЧЕЗНИЙ РОЗРИВ */
+  /* 5. СЕКЦІЯ ТЕКСТУ ("У твоєму темпі...") — ПОВНОЕКРАННА ШТОРКА ТА ВИРІВНЮВАННЯ */
   .pc-text {
     padding: 0 !important;
-    margin-top: 10px !important; /* Одразу після квітки, жодних провітрювань */
+    margin-top: 10px !important; 
   }
   .pc-text-box { 
-    height: auto !important; 
+    /* ЗМІНЕНО: Задаємо висоту на весь екран, щоб шторка покривала весь простір */
+    height: 100vh !important; 
     padding: 20px 0 40px 0 !important; 
-    gap: 10px !important; 
+    gap: 12px !important; 
     align-items: flex-start; 
     display: flex;
     flex-direction: column;
+    /* ЗМІНЕНО: Центруємо текст по вертикалі на екрані */
+    justify-content: center; 
   }
   .pc-text-line { 
     font-family: "Playfair Display", serif !important;
-    font-size: 26px !important; /* Ідеальний розмір для мобільних екранів, щоб не виглядати величезним */
+    font-size: 26px !important; 
     line-height: 1.2 !important; 
     text-align: left; 
     letter-spacing: -0.02em; 
     color: #171717 !important;
   }
-  /* Сучасна акуратна драбинка */
+  /* ЗМІНЕНО: margin-left: 0 для всіх рядків, щоб вирівняти їх по лівому краю */
   .pc-text-line:nth-child(1) { margin-left: 0 !important; opacity: 1 !important; }
-  .pc-text-line:nth-child(2) { margin-left: 16px !important; opacity: 0.8 !important; }
-  .pc-text-line:nth-child(3) { margin-left: 32px !important; opacity: 0.5 !important; }
-  
-  .about-wipe-layer { display: none !important; } 
+  .pc-text-line:nth-child(2) { margin-left: 0 !important; opacity: 0.8 !important; }
+  .pc-text-line:nth-child(3) { margin-left: 0 !important; opacity: 0.5 !important; }
 
   /* 6. РУХАТИМОСЯ ДАЛІ ПО СЕКЦІЯХ З КОМПАКТНИМИ ВІДСТУПАМИ */
   .aboutme-section { padding: 40px 20px; }

@@ -108,64 +108,62 @@ window.addEventListener('load', () => {
   }
 
   // ==============================================================
-  // 4. ШТОРКА ТА НОВИЙ ТЕКСТ (Вимкнено на мобільних)
+  // 4. ШТОРКА ТА НОВИЙ ТЕКСТ (Тепер працює і на мобільних)
   // ==============================================================
-  if (!isMobile) {
-    function positionAboutNew(){
-      const about   = document.querySelector('#about');
-      const lines   = about?.querySelectorAll('.pc-text-line');
-      const newText = about?.querySelector('.about-new');
-      if (!about || !lines || lines.length < 2 || !newText) return;
-
-      const target     = lines[1];
-      const aboutRect  = about.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-
-      const left = Math.round(targetRect.left - aboutRect.left);
-      const top  = Math.round(targetRect.top  - aboutRect.top);
-
-      const cs = window.getComputedStyle(target);
-      newText.style.fontFamily    = cs.fontFamily;
-      newText.style.fontSize      = cs.fontSize;
-      newText.style.lineHeight    = cs.lineHeight;
-      newText.style.fontWeight    = cs.fontWeight;
-      newText.style.letterSpacing = cs.letterSpacing;
-      newText.style.color         = '#000';
-
-      const layer = about.querySelector('.about-reveal-text');
-      layer?.style.setProperty('--matchLeft', `${left}px`);
-      layer?.style.setProperty('--matchTop',  `${top}px`);
-    }
-
-    positionAboutNew();
-    window.addEventListener('resize', () => { positionAboutNew(); ScrollTrigger.refresh(); });
-    ScrollTrigger.addEventListener('refresh', positionAboutNew);
-
-    const about = document.querySelector('#about');
+  function positionAboutNew(){
+    const about   = document.querySelector('#about');
+    const lines   = about?.querySelectorAll('.pc-text-line');
     const newText = about?.querySelector('.about-new');
+    if (!about || !lines || lines.length < 2 || !newText) return;
 
-    const wipeTL = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#about',
-        start: 'center center',
-        end: '+=100%',
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
-        onUpdate: self => updateReveal(self.progress)
-      }
-    });
-    wipeTL.to('.about-wipe-layer', { '--wipeScale': 1, duration: 1, ease: 'none' }, 0);
+    const target     = lines[1];
+    const aboutRect  = about.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
 
-    function updateReveal(progress){
-      if (!about || !newText) return;
-      const aboutRect = about.getBoundingClientRect();
-      const ntRect    = newText.getBoundingClientRect();
-      const panelLeftX = aboutRect.right - aboutRect.width * progress;
-      const insetLeft  = Math.max(Math.ceil(panelLeftX - ntRect.left) + 1, 0);
-      about.querySelector('.about-wipe-layer')
-           ?.style.setProperty('--winLeftPx', `${insetLeft}px`);
+    const left = Math.round(targetRect.left - aboutRect.left);
+    const top  = Math.round(targetRect.top  - aboutRect.top);
+
+    const cs = window.getComputedStyle(target);
+    newText.style.fontFamily    = cs.fontFamily;
+    newText.style.fontSize      = cs.fontSize;
+    newText.style.lineHeight    = cs.lineHeight;
+    newText.style.fontWeight    = cs.fontWeight;
+    newText.style.letterSpacing = cs.letterSpacing;
+    newText.style.color         = '#000';
+
+    const layer = about.querySelector('.about-reveal-text');
+    layer?.style.setProperty('--matchLeft', `${left}px`);
+    layer?.style.setProperty('--matchTop',  `${top}px`);
+  }
+
+  positionAboutNew();
+  window.addEventListener('resize', () => { positionAboutNew(); ScrollTrigger.refresh(); });
+  ScrollTrigger.addEventListener('refresh', positionAboutNew);
+
+  const about = document.querySelector('#about');
+  const newText = about?.querySelector('.about-new');
+
+  const wipeTL = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#about',
+      start: 'center center',
+      end: '+=100%',
+      pin: true,
+      scrub: true,
+      anticipatePin: 1,
+      onUpdate: self => updateReveal(self.progress)
     }
+  });
+  wipeTL.to('.about-wipe-layer', { '--wipeScale': 1, duration: 1, ease: 'none' }, 0);
+
+  function updateReveal(progress){
+    if (!about || !newText) return;
+    const aboutRect = about.getBoundingClientRect();
+    const ntRect    = newText.getBoundingClientRect();
+    const panelLeftX = aboutRect.right - aboutRect.width * progress;
+    const insetLeft  = Math.max(Math.ceil(panelLeftX - ntRect.left) + 1, 0);
+    about.querySelector('.about-wipe-layer')
+         ?.style.setProperty('--winLeftPx', `${insetLeft}px`);
   }
 }); 
 
