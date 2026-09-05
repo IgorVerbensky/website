@@ -189,7 +189,9 @@ html,body{
 .aboutme-text{ color:#000; font-family:"Playfair Display"; font-size:24px; }
 
 /* =================== EDUCATION =================== */
-.education-section { background:#E8E8E6; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:270px; padding-bottom:120px; }
+/* =================== EDUCATION =================== */
+/* =================== EDUCATION =================== */
+.education-section { background:#FFFFFF; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:270px; padding-bottom:120px; }
 .content-box { margin-left:120px; max-width:max-content; }
 .edu-title { font-family:"Playfair Display",serif; font-size:40px; font-weight:700; margin-bottom:40px; }
 .edu-item { margin-bottom:32px; cursor:pointer; padding:.5rem 0; transition:color .3s ease; }
@@ -205,7 +207,8 @@ html,body{
 }
 
 /* =================== HOW I WORK (STEPPER) =================== */
-.howto-section { background:#E8E8E6; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:70px; padding-bottom:200px; }
+/* =================== HOW I WORK (STEPPER) =================== */
+.howto-section { background:#FDF5F5; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:70px; padding-bottom:200px; }
 .textblock { margin-left:120px; max-width:800px; }
 .howdoIworktext { font-family:"Playfair Display",serif; font-size:48px; font-weight:400; color:#000; text-transform:uppercase; margin-bottom:40px; }
 .howIwork { display:flex; flex-direction:column; gap:20px; }
