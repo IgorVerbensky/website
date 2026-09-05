@@ -1,25 +1,23 @@
 /* ================== ON LOAD (GSAP intro + ABOUT wipe) ================== */
 window.addEventListener('load', () => {
   if (!window.gsap || !window.ScrollTrigger) return;
-  // ДОДАЙ ЦЕЙ РЯДОК: Якщо екран менший за 1100px - не запускаємо GSAP анімації
-  if (window.innerWidth < 1100) return; 
-
-  
   gsap.registerPlugin(ScrollTrigger);
 
-  // 1. Вхідні анімації при завантаженні
+  // Визначаємо, чи це мобільний пристрій
+  const isMobile = window.innerWidth <= 900;
+
+  // 1. Вхідні анімації при завантаженні (Працюють скрізь)
   gsap.from('.reveal-line', { y: 14, opacity: 0, duration: 0.9, ease: 'power2.out', stagger: 0.15 });
   gsap.from(['.lead','.cta'], { opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.45, stagger: 0.2 });
   gsap.from('.hero-img', { opacity: 0, y: 10, scale: 0.98, duration: 0.8, ease: 'power2.out', delay: 0.35 });
 
   // ==============================================================
-  // 2. ФІКСАЦІЯ МЕНЮ ТА ГЕРОЯ (Разом) ДЛЯ АНІМАЦІЇ КВІТКИ
+  // 2. ФІКСАЦІЯ МЕНЮ ТА ГЕРОЯ ДЛЯ АНІМАЦІЇ КВІТКИ (Працює і на мобільному!)
   // ==============================================================
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.hero');
   let triggerEl = ".hero";
 
-  // Динамічно обгортаємо хедер і героя в один блок, щоб зафіксувати їх разом
   if (header && hero) {
     const pinWrapper = document.createElement('div');
     pinWrapper.className = 'hero-pin-wrapper';
@@ -34,7 +32,6 @@ window.addEventListener('load', () => {
     const context = canvas.getContext("2d");
     const frameCount = 81; 
     
-    // Формуємо шлях до файлів з дужками
     const currentFrame = index => `assets/img/sequence/frame (${index + 1}).png`;
     const images = [];
     const playhead = { frame: 0 };
@@ -52,14 +49,14 @@ window.addEventListener('load', () => {
       context.drawImage(images[playhead.frame], 0, 0, canvas.width, canvas.height);
     }
 
-    // Таймлайн для фіксації всього верхнього екрану (Меню + Герой)
+    // Таймлайн: на мобільному скрол 1000px, на ПК 2500px
     const heroTl = gsap.timeline({
       scrollTrigger: {
-        trigger: triggerEl,    // Тригер - наша нова обгортка
-        start: "top top",      // Спрацьовує одразу при завантаженні (від верху екрана)
-        end: "+=2500",         // Тривалість анімації (чим більше, тим повільніше)
-        pin: true,             // Фіксуємо ЕКРАН РАЗОМ З МЕНЮ
-        scrub: 1.2,            // Плавність програвання
+        trigger: triggerEl,    
+        start: "top top",      
+        end: isMobile ? "+=1000" : "+=2500", 
+        pin: true,             
+        scrub: 1.2,            
         anticipatePin: 1
       }
     });
@@ -74,7 +71,7 @@ window.addEventListener('load', () => {
   }
 
   // ==============================================================
-  // 3. ЗМІНА КОЛЬОРУ ТА ПЕРЕХІД ДО СЕКЦІЇ ABOUT
+  // 3. ЗМІНА КОЛЬОРУ ТА ПЕРЕХІД ДО СЕКЦІЇ ABOUT (Працює скрізь)
   // ==============================================================
   const root = document.documentElement;
   const HERO_BG = '#E8E8E6';
@@ -91,79 +88,86 @@ window.addEventListener('load', () => {
     }
   }).to(root, { '--page-bg': PINK_BG, duration: 1, ease: 'none' });
 
-gsap.fromTo('.hero-img', 
-    { opacity: 1 }, 
-    {
-      opacity: 0,
-      ease: "none",
+  // ВИПРАВЛЕНО: Розчинення квітки в 0 працює ТІЛЬКИ на ПК. 
+  // На телефоні вона просто поїде вгору після розпускання, щоб уникнути багу зі зникненням.
+  if (!isMobile) {
+    gsap.fromTo('.hero-img', 
+      { opacity: 1 }, 
+      {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top bottom',
+          end: 'top center',
+          scrub: true,
+          immediateRender: false 
+        }
+      }
+    );
+  }
+
+  // ==============================================================
+  // 4. ШТОРКА ТА НОВИЙ ТЕКСТ (Вимкнено на мобільних)
+  // ==============================================================
+  if (!isMobile) {
+    function positionAboutNew(){
+      const about   = document.querySelector('#about');
+      const lines   = about?.querySelectorAll('.pc-text-line');
+      const newText = about?.querySelector('.about-new');
+      if (!about || !lines || lines.length < 2 || !newText) return;
+
+      const target     = lines[1];
+      const aboutRect  = about.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      const left = Math.round(targetRect.left - aboutRect.left);
+      const top  = Math.round(targetRect.top  - aboutRect.top);
+
+      const cs = window.getComputedStyle(target);
+      newText.style.fontFamily    = cs.fontFamily;
+      newText.style.fontSize      = cs.fontSize;
+      newText.style.lineHeight    = cs.lineHeight;
+      newText.style.fontWeight    = cs.fontWeight;
+      newText.style.letterSpacing = cs.letterSpacing;
+      newText.style.color         = '#000';
+
+      const layer = about.querySelector('.about-reveal-text');
+      layer?.style.setProperty('--matchLeft', `${left}px`);
+      layer?.style.setProperty('--matchTop',  `${top}px`);
+    }
+
+    positionAboutNew();
+    window.addEventListener('resize', () => { positionAboutNew(); ScrollTrigger.refresh(); });
+    ScrollTrigger.addEventListener('refresh', positionAboutNew);
+
+    const about = document.querySelector('#about');
+    const newText = about?.querySelector('.about-new');
+
+    const wipeTL = gsap.timeline({
       scrollTrigger: {
         trigger: '#about',
-        start: 'top bottom',
-        end: 'top center',
+        start: 'center center',
+        end: '+=100%',
+        pin: true,
         scrub: true,
-        immediateRender: false 
+        anticipatePin: 1,
+        onUpdate: self => updateReveal(self.progress)
       }
+    });
+    wipeTL.to('.about-wipe-layer', { '--wipeScale': 1, duration: 1, ease: 'none' }, 0);
+
+    function updateReveal(progress){
+      if (!about || !newText) return;
+      const aboutRect = about.getBoundingClientRect();
+      const ntRect    = newText.getBoundingClientRect();
+      const panelLeftX = aboutRect.right - aboutRect.width * progress;
+      const insetLeft  = Math.max(Math.ceil(panelLeftX - ntRect.left) + 1, 0);
+      about.querySelector('.about-wipe-layer')
+           ?.style.setProperty('--winLeftPx', `${insetLeft}px`);
     }
-  );
-
-  /* ====== ABOUT wipe (панель справа→ліво + reveal нового тексту) ====== */
-  function positionAboutNew(){
-    const about   = document.querySelector('#about');
-    const lines   = about?.querySelectorAll('.pc-text-line');
-    const newText = about?.querySelector('.about-new');
-    if (!about || !lines || lines.length < 2 || !newText) return;
-
-    const target     = lines[1];
-    const aboutRect  = about.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-
-    const left = Math.round(targetRect.left - aboutRect.left);
-    const top  = Math.round(targetRect.top  - aboutRect.top);
-
-    const cs = window.getComputedStyle(target);
-    newText.style.fontFamily    = cs.fontFamily;
-    newText.style.fontSize      = cs.fontSize;
-    newText.style.lineHeight    = cs.lineHeight;
-    newText.style.fontWeight    = cs.fontWeight;
-    newText.style.letterSpacing = cs.letterSpacing;
-    newText.style.color         = '#000';
-
-    const layer = about.querySelector('.about-reveal-text');
-    layer?.style.setProperty('--matchLeft', `${left}px`);
-    layer?.style.setProperty('--matchTop',  `${top}px`);
   }
-
-  positionAboutNew();
-  window.addEventListener('resize', () => { positionAboutNew(); ScrollTrigger.refresh(); });
-  ScrollTrigger.addEventListener('refresh', positionAboutNew);
-
-  const about = document.querySelector('#about');
-  const newText = about?.querySelector('.about-new');
-
-  const wipeTL = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#about',
-      start: 'center center',
-      end: '+=100%',
-      pin: true,
-      scrub: true,
-      anticipatePin: 1,
-      onUpdate: self => updateReveal(self.progress)
-    }
-  });
-  wipeTL.to('.about-wipe-layer', { '--wipeScale': 1, duration: 1, ease: 'none' }, 0);
-
-  function updateReveal(progress){
-    if (!about || !newText) return;
-    const aboutRect = about.getBoundingClientRect();
-    const ntRect    = newText.getBoundingClientRect();
-    const panelLeftX = aboutRect.right - aboutRect.width * progress;
-    const insetLeft  = Math.max(Math.ceil(panelLeftX - ntRect.left) + 1, 0);
-    about.querySelector('.about-wipe-layer')
-         ?.style.setProperty('--winLeftPx', `${insetLeft}px`);
-  }
-}); // end load
-
+}); 
 
 /* ================== EDUCATION preview hover/click ================== */
 document.querySelectorAll('.edu-item').forEach(item => {
@@ -178,7 +182,6 @@ document.querySelectorAll('.edu-item').forEach(item => {
   item.addEventListener('mouseenter', setImg);
   item.addEventListener('click', setImg); 
 });
-
 
 /* ================== HOWTO SCROLL-STEPPER ================== */
 let __lastScrollY = window.scrollY;
@@ -195,6 +198,9 @@ window.addEventListener('scroll', () => {
   const panel      = document.getElementById('pairPanel');
   const pointsWrap = document.getElementById('points');
   if (!section || !title || !panel || !pointsWrap) return;
+
+  // Вимикаємо блокування скролу для степера на мобільних
+  if (window.innerWidth <= 900) return;
 
   const points = Array.from(pointsWrap.querySelectorAll('.point'));
 
@@ -266,7 +272,6 @@ window.addEventListener('scroll', () => {
     const now = performance.now();
     if (now - lastWheelTs < 220){ e.preventDefault(); return; } 
     lastWheelTs = now;
-
     e.preventDefault();
     const dir = e.deltaY > 0 ? 1 : -1;
     goToStep(step + dir);
