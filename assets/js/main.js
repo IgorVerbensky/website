@@ -332,4 +332,23 @@ window.addEventListener('scroll', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
+  document.addEventListener("DOMContentLoaded", () => {
+  const observerOptions = {
+    threshold: 0.15 // Triggers when 15% of the element is visible
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); // Ensures the animation only plays once
+      }
+    });
+  }, observerOptions);
+
+  // Select all elements with the class 'reveal-element'
+  document.querySelectorAll('.reveal-element').forEach((el) => {
+    observer.observe(el);
+  });
+});
 })();

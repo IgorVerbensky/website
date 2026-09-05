@@ -432,6 +432,21 @@ html,body{
   .footer-cta .btn-cta, .footer-cta .cta-note{ max-width:100%; }
   .footer-bottom{ padding:12px 24px 16px; }
 }
+/* =================== ANIMATIONS =================== */
+/* Elements hide initially and slide down slightly */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Class added by JavaScript when scrolled into view */
+.reveal-element.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
 /* =======================================================
    ПРЕМІАЛЬНА МОБІЛЬНА ВЕРСІЯ (Екрани < 900px)
    Ідеальні пропорції, нуль зайвих дірок, преміум-типографіка
@@ -552,6 +567,7 @@ html,body{
 
   .education-section { padding: 40px 20px !important; border-top: 1px solid rgba(0,0,0,0.05); }
   .education-inner { flex-direction: column; gap: 20px; }
+  .content-box { margin-left: 0 !important; max-width: 100% !important; }
   .edu-title { font-size: 28px !important; margin-bottom: 20px !important; }
   .edu-item { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
   .edu-name { font-size: 18px !important; }
@@ -560,6 +576,7 @@ html,body{
 
   .howto-section { padding: 40px 20px !important; border-top: 1px solid rgba(0,0,0,0.05); }
   .howto-row { flex-direction: column; gap: 20px; }
+  .textblock { margin-left: 0 !important; }
   .howdoIworktext { font-size: 28px !important; margin-bottom: 24px !important; }
   .pair-panel { display: none !important; } 
   .howIwork { gap: 20px !important; }
@@ -572,20 +589,34 @@ html,body{
 
   .youfeel-section { padding: 40px 20px !important; text-align: left !important; }
   .title-youfeel { font-size: 28px !important; line-height: 1.2; }
-  .title-explainer { font-size: 15px !important; margin-bottom: 30px !important; }
+  .title-explainer { 
+    font-size: 15px !important; 
+    margin-bottom: 30px !important; 
+    font-family: "Nunito", sans-serif !important; /* Змінено шрифт на Nunito */
+    line-height: 1.6 !important; /* Збільшено міжрядковий інтервал для легкості читання */
+  }
   .youfeel-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   .youfeel-item { 
     flex-direction: row !important; 
-    padding: 16px 20px !important; 
-    background: #ffffff !important;
+    padding: 16px 0 !important; /* Збільшено відступи зверху і знизу (візуальне повітря) */
+    background: transparent !important; /* Прибираємо білий фон карток */
     border: none !important; 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.03) !important; 
-    border-radius: 16px !important; 
-    gap: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important; /* Делікатна, напівпрозора роздільна лінія */
+    box-shadow: none !important; 
+    border-radius: 0 !important; 
+    aspect-ratio: auto !important; /* Запобігає розтягуванню у величезні квадрати */
+    height: auto !important;
   }
-  .youfeel-item .icon { width: 40px !important; height: 40px !important; }
-  .youfeel-item p { font-size: 16px !important; }
-
+  .youfeel-item .icon { 
+    display: none !important; 
+  }
+ .youfeel-item p { 
+    font-size: 16px !important; 
+    font-family: "Nunito", sans-serif !important; /* Змінено шрифт на Nunito */
+    text-align: left !important;
+    width: 100%;
+    margin: 0 !important;
+  }
   .cta-block { margin-top: 30px !important; text-align: left !important; }
   .btn-cta { 
     width: 100%; text-align: center; font-size: 16px !important; 
@@ -596,4 +627,67 @@ html,body{
   .footer-wrap { display: flex !important; flex-direction: column !important; gap: 30px !important; padding: 40px 20px 30px 20px !important; border-top: 1px solid rgba(0,0,0,0.1); }
   .footer-cta { display: none !important; } 
   .footer-bottom { padding: 20px !important; }
+  /* ... your other mobile styles ... */
+
+  .content-box {
+    margin-left: 0;
+    max-width: 100%;
+  }
+  /* =======================================================
+     КОЛЬОРОВИЙ РИТМ СЕКЦІЙ (Тільки для мобільних)
+     ======================================================= */
+  .aboutme-section {
+    background-color: #E8E8E6 !important; 
+  }
+  
+  .education-section {
+    background-color: #FFFFFF !important; /* Чистий білий для контрасту */
+  }
+  
+  .howto-section {
+    background-color: #FDF5F5 !important; /* Легкий теплий рожевий */
+  }
+  
+  .youfeel-section {
+    background-color: #E8E8E6 !important; /* Повернення до молочного */
+  }
+  
+  .site-footer {
+    background-color: #E8E8E6 !important;
+  }
+
+  /* =======================================================
+     МІНІМАЛІСТИЧНІ ТЕМИ ТА ТИПОГРАФІКА
+     ======================================================= */
+  .title-explainer { 
+    font-size: 15px !important; 
+    margin-bottom: 30px !important; 
+    font-family: "Nunito", sans-serif !important; 
+    line-height: 1.6 !important; 
+  }
+
+  .youfeel-item { 
+    flex-direction: row !important; 
+    padding: 16px 0 !important; 
+    background: transparent !important; 
+    border: none !important; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important; 
+    box-shadow: none !important; 
+    border-radius: 0 !important; 
+    aspect-ratio: auto !important; 
+    height: auto !important;
+  }
+  
+  .youfeel-item .icon { 
+    display: none !important; 
+  }
+  
+  .youfeel-item p { 
+    font-size: 16px !important; 
+    font-family: "Nunito", sans-serif !important; 
+    text-align: left !important;
+    width: 100%;
+    margin: 0 !important;
+  }
+
 }
