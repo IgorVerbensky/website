@@ -434,11 +434,6 @@ html,body{
 }
 /* =================== ANIMATIONS =================== */
 /* Elements hide initially and slide down slightly */
-.reveal-element {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
 
 /* Class added by JavaScript when scrolled into view */
 .reveal-element.is-visible {

@@ -332,23 +332,24 @@ window.addEventListener('scroll', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
-  document.addEventListener("DOMContentLoaded", () => {
-  const observerOptions = {
-    threshold: 0.15 // Triggers when 15% of the element is visible
-  };
-
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target); // Ensures the animation only plays once
-      }
+})(); // <-- This bracket was missing! It correctly closes the footer block.
+// ===== GSAP REVEAL ANIMATIONS =====
+window.addEventListener("load", () => {
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger); // Ensures the plugin is active
+    
+    gsap.utils.toArray('.gsap-reveal').forEach((elem) => {
+      gsap.from(elem, {
+        scrollTrigger: {
+          trigger: elem,
+          start: "top 85%", // Starts exactly when the element enters the bottom 15% of your screen
+          toggleActions: "play none none none"
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      });
     });
-  }, observerOptions);
-
-  // Select all elements with the class 'reveal-element'
-  document.querySelectorAll('.reveal-element').forEach((el) => {
-    observer.observe(el);
-  });
+  }
 });
-})();
