@@ -360,6 +360,22 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 
   <!-- Скрипт -->
-  <script src="assets/js/main.js"></script>
+<!-- Динамічне завантаження скриптів залежно від пристрою -->
+  <script>
+    // Використовуємо matchMedia для точного співпадіння з  CSS
+    if (window.matchMedia("(min-width: 1100px)").matches) {
+      // Якщо це ПК — вантажимо  оригінальний скрипт з анімаціями
+      const scriptDesk = document.createElement('script');
+      scriptDesk.src = 'assets/js/main.js';
+      document.body.appendChild(scriptDesk);
+    } else {
+      // Якщо це телефон — вантажимо легкий скрипт
+      const scriptMob = document.createElement('script');
+      scriptMob.src = 'assets/js/main-mobile.js';
+      document.body.appendChild(scriptMob);
+    }
+  </script>
+</body>
+</html>
 </body>
 </html>

@@ -1,6 +1,10 @@
 /* ================== ON LOAD (GSAP intro + ABOUT wipe) ================== */
 window.addEventListener('load', () => {
   if (!window.gsap || !window.ScrollTrigger) return;
+  // ДОДАЙ ЦЕЙ РЯДОК: Якщо екран менший за 1100px - не запускаємо GSAP анімації
+  if (window.innerWidth < 1100) return; 
+
+  
   gsap.registerPlugin(ScrollTrigger);
 
   // 1. Вхідні анімації при завантаженні
