@@ -239,7 +239,20 @@ html,body{
   .education-preview{ order:2; width:100%; max-width:100%; }
   .content-box{ order:1; }
 }
+/* Restricts the maximum size of the right-side container */
+.education-preview {
+  width: 100%;
+  max-width: 450px; /* You can change this number to make the pictures larger or smaller */
+  flex-shrink: 0;   /* Prevents the flexbox layout from squishing the image */
+}
 
+/* Ensures the image dynamically scales to fit the container */
+.edu-img {
+  width: 100%;
+  height: auto;
+  display: block;
+ filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.08));
+}
 
 /* =================== HOW I WORK (STEPPER) =================== */
 .howto-section { background:#FDF5F5; padding: clamp(2rem, 5vw, 4rem) 0; padding-top:70px; padding-bottom:200px; }
