@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  // Визначаємо, чи це мобільний пристрій
+  // Визначаємо, це мобільний пристрій?
   const isMobile = window.innerWidth <= 900;
 
   // 1. Вхідні анімації при завантаженні (Працюють скрізь)
@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
   gsap.from('.hero-img', { opacity: 0, y: 10, scale: 0.98, duration: 0.8, ease: 'power2.out', delay: 0.35 });
 
   // ==============================================================
-  // 2. ФІКСАЦІЯ МЕНЮ ТА ГЕРОЯ ДЛЯ АНІМАЦІЇ КВІТКИ (Працює і на мобільному!)
+  // 2. ФІКСАЦІЯ МЕНЮ ТА ГЕРОЯ ДЛЯ АНІМАЦІЇ КВІТКИ (Працює і на мобілці)
   // ==============================================================
   const header = document.querySelector('.site-header');
   const hero = document.querySelector('.hero');
@@ -49,7 +49,7 @@ window.addEventListener('load', () => {
       context.drawImage(images[playhead.frame], 0, 0, canvas.width, canvas.height);
     }
 
-    // Таймлайн: на мобільному скрол 1000px, на ПК 2500px
+    // Таймлайн: на мобілці скрол 1000px, на ПК 2500px
     const heroTl = gsap.timeline({
       scrollTrigger: {
         trigger: triggerEl,    
@@ -108,7 +108,7 @@ window.addEventListener('load', () => {
   }
 
   // ==============================================================
-  // 4. ШТОРКА ТА НОВИЙ ТЕКСТ (Тепер працює і на мобільних)
+  // 4. ШТОРКА ТА НОВИЙ ТЕКСТ 
   // ==============================================================
   function positionAboutNew(){
     const about   = document.querySelector('#about');
@@ -332,7 +332,7 @@ window.addEventListener('scroll', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
-})(); // <-- This bracket was missing! It correctly closes the footer block.
+})(); 
 // ===== GSAP REVEAL ANIMATIONS =====
 window.addEventListener("load", () => {
   if (window.gsap && window.ScrollTrigger) {
@@ -360,7 +360,7 @@ window.addEventListener('load', () => {
     gsap.to(floatingCta, {
       scrollTrigger: {
         trigger: "body",
-        start: "top -4300px", // Shows after scrolling 800px down
+        start: "top -4300px", // Shows after scrolling ____px down
         endTrigger: ".site-footer",
         end: "top bottom",   // Hides when footer reaches bottom of viewport
         toggleActions: "play reverse play reverse"
