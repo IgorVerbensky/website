@@ -823,6 +823,42 @@ html,body{
     font-family: "Nunito", sans-serif !important; 
     line-height: 1.6 !important; 
   }
+} /* <--- MOVE THIS BRACKET HERE (This closes the @media 1024px block) */
 
+/* =================== FLOATING CTA =================== */
+.floating-cta {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 999;
+  background-color: var(--accent);
+  color: var(--text);
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(244, 169, 168, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Hidden by default, revealed by GSAP */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
 
+.floating-cta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(244, 169, 168, 0.6);
+}
+
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  .floating-cta {
+    bottom: 20px;
+    right: 20px;
+    font-size: 15px;
+    padding: 12px 20px;
+  }
 }

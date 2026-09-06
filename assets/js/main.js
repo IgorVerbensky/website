@@ -353,3 +353,22 @@ window.addEventListener("load", () => {
     });
   }
 });
+/* ================== FLOATING CTA ANIMATION ================== */
+window.addEventListener('load', () => {
+  const floatingCta = document.querySelector('.floating-cta');
+  if (floatingCta && window.gsap && window.ScrollTrigger) {
+    gsap.to(floatingCta, {
+      scrollTrigger: {
+        trigger: "body",
+        start: "top -4300px", // Shows after scrolling 800px down
+        endTrigger: ".site-footer",
+        end: "top bottom",   // Hides when footer reaches bottom of viewport
+        toggleActions: "play reverse play reverse"
+      },
+      autoAlpha: 1,          // Changes opacity to 1 and visibility to visible
+      y: 0,                  // Slides up into its normal position
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }
+});
