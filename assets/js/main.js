@@ -353,22 +353,59 @@ window.addEventListener("load", () => {
     });
   }
 });
-/* ================== FLOATING CTA ANIMATION ================== */
+
+/* ================== FLOATING CTA ANIMATION (ПО ПІКСЕЛЯХ) ================== */
 window.addEventListener('load', () => {
   const floatingCta = document.querySelector('.floating-cta');
-  if (floatingCta && window.gsap && window.ScrollTrigger) {
-    gsap.to(floatingCta, {
-      scrollTrigger: {
-        trigger: "body",
-        start: "top -4300px", // Shows after scrolling ____px down
-        endTrigger: ".site-footer",
-        end: "top bottom",   // Hides when footer reaches bottom of viewport
-        toggleActions: "play reverse play reverse"
-      },
-      autoAlpha: 1,          // Changes opacity to 1 and visibility to visible
-      y: 0,                  // Slides up into its normal position
-      duration: 0.3,
-      ease: "power2.out"
-    });
+  if (!floatingCta || !window.gsap) return;
+
+  // ==========================================================
+  // НАЛАШТУВАННЯ У ПІКСЕЛЯХ 
+  // ==========================================================
+  const PC_START  = 4500; 
+  const PC_END    = 8400; 
+
+  const MOB_START = 2500;  
+  const MOB_END   = 5700; 
+  // ==========================================================
+
+  let isVisible = false;
+
+  function updateButtonVisibility() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const isMobile = window.innerWidth <= 900;
+
+    const start = isMobile ? MOB_START : PC_START;
+    const end   = isMobile ? MOB_END   : PC_END;
+
+    // Якщо скрол знаходиться в заданому діапазоні
+    if (scrollY >= start && scrollY <= end) {
+      if (!isVisible) {
+        isVisible = true;
+        gsap.to(floatingCta, { 
+          autoAlpha: 1, 
+          y: 0, 
+          duration: 0.3, 
+          overwrite: 'auto' 
+        });
+      }
+    } else {
+      if (isVisible) {
+        isVisible = false;
+        gsap.to(floatingCta, { 
+          autoAlpha: 0, 
+          y: 20, 
+          duration: 0.3, 
+          overwrite: 'auto' 
+        });
+      }
+    }
   }
+
+  // Відстежуємо скрол та зміну розміру вікна
+  window.addEventListener('scroll', updateButtonVisibility, { passive: true });
+  window.addEventListener('resize', updateButtonVisibility);
+
+  // Перевірка стану одразу після завантаження
+  updateButtonVisibility();
 });

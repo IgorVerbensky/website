@@ -909,9 +909,37 @@ html, body {
 
 @media (max-width: 900px) {
   .floating-cta {
-    bottom: 20px;
+    
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     right: 20px;
+    z-index: 9999;
+
+   
+    padding: 12px 22px;
     font-size: 15px;
-    padding: 12px 20px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background-color: var(--accent);
+    color: #171717;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(244, 169, 168, 0.45), 
+                0 2px 6px rgba(0, 0, 0, 0.06);
+
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
+
+  
+  .floating-cta:active {
+    transform: scale(0.96) !important;
+    box-shadow: 0 4px 12px rgba(244, 169, 168, 0.35);
+  }
+}
 }   
